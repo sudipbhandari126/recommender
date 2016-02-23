@@ -104,9 +104,9 @@ public class DataFeederMovies extends javax.swing.JFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String criticname=jTextField3.getText();
-        String moviename=jTextField1.getText();
-        Float rating=Float.valueOf(jTextField2.getText());
+        String criticname=jTextField3.getText().toLowerCase();
+        String moviename=jTextField1.getText().toLowerCase();
+        Float rating=Float.valueOf(jTextField2.getText().toLowerCase());
          try{
                                         
                  Class.forName("com.mysql.jdbc.Driver");

@@ -9,6 +9,12 @@ import java.sql.*;
  class DataSet {
      
      
+     Map<String,Map> critics = new HashMap<>();
+        Map<String, Float> temp;
+
+        Map<String,Float> ratings=new HashMap<>();
+        
+     
        String showList()
        {
            String temp="";
@@ -23,10 +29,6 @@ import java.sql.*;
            return temp;
        }
 
-        Map<String,Map> critics = new HashMap<>();
-        Map<String, Float> temp;
-
-        Map<String,Float> ratings=new HashMap<>();
         
         
         
@@ -46,7 +48,8 @@ import java.sql.*;
     Statement st=con.createStatement();
     ResultSet rs=st.executeQuery("select * from movieratings order by critic");
     
-    String previousCritic=new String();
+    String previousCritic="";
+    
     
     
     while (rs.next())
@@ -54,24 +57,20 @@ import java.sql.*;
 String critic=rs.getString("critic");
 String movie=rs.getString("movie");
 Float rating=rs.getFloat("rating");
-
-
-if ((!critic.equals(previousCritic) &&(!previousCritic.isEmpty()))||rs.isLast())
+System.out.println(critic+" "+movie+" "+rating);
+if ((previousCritic.isEmpty())||((previousCritic.equals(critic))&&!(rs.isLast())))
 {
-//map rating to movies, rating to critic and clear the map for next critic
-   
+    ratings.put(movie, rating);
+}
+else {
+
     temp=new HashMap<>(ratings);
     critics.put(previousCritic,temp);
-    
     ratings.clear();
     
-     ratings.put(movie, rating); //start for another critic
+    ratings.put(movie, rating); 
 }
-else 
-        {
-    //keep on mapping to the movies
-            ratings.put(movie, rating);
-        }
+
 previousCritic=critic;
 
 }
@@ -170,6 +169,12 @@ previousCritic=critic;
             temp=new HashMap<>(ratings);
             critics.put("Sudip",temp);
             ratings.clear();
+            
+            
+            //critics9
+            ratings.put("something",5F);
+            critics.put("someone", ratings);
+            ratings.clear();
 
 
         } //end of constructor DataSet
@@ -183,6 +188,7 @@ previousCritic=critic;
          return critics.get(name);
      }
 
+    
      List listCritics() //function to return the list of critcs
      {
           List ls=new ArrayList<>();
@@ -207,6 +213,8 @@ previousCritic=critic;
              Object key=thisentry.getKey();
              if (critics.get(person2).containsKey(key))  common.add(key);
          }
+         if (common.isEmpty()) {return -10000F;}
+         
          ListIterator i=common.listIterator();
          float dis=0F;
          while (i.hasNext())

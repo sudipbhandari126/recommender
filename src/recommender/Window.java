@@ -24,10 +24,12 @@ import javax.swing.*;
 public class Window extends javax.swing.JFrame {
     
        //creating Dataset Object
-    // DataSet ds=new DataSet(1); //passing an integer connects to database
-     DataSet ds=new DataSet(); //constructing demo object
+  DataSet ds=new DataSet(1); //passing an integer connects to database
+   // DataSet ds=new DataSet(); //constructing demo object
      
       static Image icon;
+      
+      
      
     /**
      * Creates new form Window
@@ -246,6 +248,10 @@ public class Window extends javax.swing.JFrame {
         String person1=jTextField1.getText();
         
         java.util.List critcslist=ds.listCritics();
+        
+        //System.out.println(critcslist);
+       // System.out.println(ds.distance("sudip", "ram"));
+        
         if (!critcslist.contains(person1)) {jTextArea1.setText("This user doesn't exist or hasn't"
                 + "rated anything yet to have recommendations!!");}
         else {
@@ -258,9 +264,13 @@ public class Window extends javax.swing.JFrame {
             Object name=i.next().toString();
             float distance=ds.distance(person1,name.toString());
             distancemap.put(name.toString(),distance);
+            
+           //System.out.println(ds.distance("sudip", "hari"));
         
             Map mymap=ds.listMovies(person1);
             float threshold=Float.valueOf(jTextField2.getText())/100; //threshold value
+            
+            
             
             HashSet hs=new HashSet(); //set of recommendations!!
         Iterator entries=distancemap.entrySet().iterator();
@@ -346,14 +356,24 @@ public class Window extends javax.swing.JFrame {
 
     private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged
         // TODO add your handling code here:
-        float value= ((javax.swing.JSlider)evt.getSource()).getValue();
-       jTextField2.setText(String.valueOf(value));
-       
-       
-       {  //
-            String person1=jTextField1.getText();
+        
+        
+        Float slidervalue = new Float(jSlider1.getValue());
+        
+        String sliderstring = slidervalue.toString();
+        
+        jTextField2.setText(sliderstring);
+        
+        
+        
+        String person1=jTextField1.getText();
+        
         
         java.util.List critcslist=ds.listCritics();
+        
+        //System.out.println(critcslist);
+       // System.out.println(ds.distance("sudip", "ram"));
+        
         if (!critcslist.contains(person1)) {jTextArea1.setText("This user doesn't exist or hasn't"
                 + "rated anything yet to have recommendations!!");}
         else {
@@ -366,8 +386,12 @@ public class Window extends javax.swing.JFrame {
             Object name=i.next().toString();
             float distance=ds.distance(person1,name.toString());
             distancemap.put(name.toString(),distance);
+            
+           //System.out.println(ds.distance("sudip", "hari"));
+        
             Map mymap=ds.listMovies(person1);
             float threshold=Float.valueOf(jTextField2.getText())/100; //threshold value
+            
             
             HashSet hs=new HashSet(); //set of recommendations!!
         Iterator entries=distancemap.entrySet().iterator();
@@ -388,9 +412,7 @@ public class Window extends javax.swing.JFrame {
                 {
                     Map.Entry t=(Map.Entry)it.next();
                     Object movie=t.getKey();
-                    Object ratin=t.getValue();
-                    Float rating=Float.valueOf(ratin.toString());
-                    if (!mymap.containsKey(movie)&&(rating>=2.5))
+                    if (!mymap.containsKey(movie))
                     {
                         hs.add(movie);
                     }
@@ -415,9 +437,7 @@ public class Window extends javax.swing.JFrame {
         }
         
         }
-        } 
-           
-       }
+        }
        
        
     }//GEN-LAST:event_jSlider1StateChanged
